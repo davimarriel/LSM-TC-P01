@@ -28,7 +28,47 @@
 
 char numbers[] = {0x3F,0x06,0x5B,0x4F,0x66,0x6D,0x7D,0x07,0x7F,0x6F,
  		    0x77,0x7C,0x39,0x5E,0x79,0x71};
-char counter = 0;
+
+char tmrCounter = 0;
+char unitCounter = 0;
+char decCounter = 0;
+char minCounter = 0;
+
+void setDisplay (char dispNum){
+    switch(dispNum){
+        case 1:
+            DISP1 = 1;
+            DISP2 = 0;
+            DISP3 = 0;
+            DISP4 = 0;
+            DIGIT(unitCounter);
+            break;
+        case 2:
+            DISP1 = 0;
+            DISP2 = 1;
+            DISP3 = 0;
+            DISP4 = 0;
+            DIGIT(decCounter);
+            break;
+        case 3:
+            DISP1 = 0;
+            DISP2 = 0;
+            DISP3 = 1;
+            DISP4 = 0;
+            DIGIT(minCounter);
+            break;
+        case 4:
+            DISP1 = 0;
+            DISP2 = 0;
+            DISP3 = 0;
+            DISP4 = 1;
+            DIGIT(0);
+            break;
+        default:
+            break;
+    }
+}
+
 
 void setup(){
   	ADCON1 = 0x0F;
@@ -68,8 +108,8 @@ void setup(){
 	T0CONbits.T08BIT = 0;
 
 	//TMR0H:TMR0L
-	TMR0H = 0x0B;
-	TMR0L = 0xDC;
+	TMR0H = 0xFF;
+	TMR0L = 0x05;
 
 	//Configuração das Interrupções
 	INTCONbits.GIE = 1;
@@ -77,25 +117,40 @@ void setup(){
 	INTCONbits.TMR0IF = 0;
 	}
 void interrupt intTimer(void){
+    static char dispToggle = 1;
 	if(INTCONbits.TMR0IF == 1){
 		INTCONbits.TMR0IF = 0;
-		++counter;
-		if(counter = 10){
-			counter = 0;
-			}
-		TMR0H = 0x0B;
-		TMR0L = 0xDC;
+		++tmrCounter;
+        if(tmrCounter % 16 == 0){
+            setDisplay(dispToggle++);
+            if(dispToggle == 5){
+                dispToggle = 1;
+            }
+        }
+        if(tmrCounter == 1000){
+            ++unitCounter;
+            if(unitCounter == 10){
+                unitCounter = 0;
+                ++decCounter;
+                if(decCounter == 6){
+                    decCounter = 0;
+                    ++minCounter;
+                    if(minCounter = 9){
+                        minCounter = 0;
+                    }
+                }
+            }
+            tmrCounter = 0;
+        }
+        
+		TMR0H = 0xFF;
+		TMR0L = 0x05;
 		}
 	}
 
 void main(){
 	setup();
-	DISP1 = 1;
-	DISP2 = 0;
-	DISP3 = 0;
-	DISP4 = 0;
 	while(1){
-		DIGIT(counter);
 	}
 }
 

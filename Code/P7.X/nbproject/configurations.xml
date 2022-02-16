@@ -28,7 +28,7 @@
         <targetDevice>PIC18F4550</targetDevice>
         <targetHeader></targetHeader>
         <targetPluginBoard></targetPluginBoard>
-        <platformTool></platformTool>
+        <platformTool>PICkit3PlatformTool</platformTool>
         <languageToolchain>XC8</languageToolchain>
         <languageToolchainVersion>2.32</languageToolchainVersion>
         <platform>3</platform>
@@ -84,9 +84,9 @@
         <property key="optimization-level" value="-O0"/>
         <property key="optimization-speed" value="false"/>
         <property key="optimization-stable-enable" value="false"/>
+        <property key="pack-struct" value="true"/>
         <property key="preprocess-assembler" value="true"/>
         <property key="short-enums" value="true"/>
-        <property key="tentative-definitions" value="-fno-common"/>
         <property key="undefine-macros" value=""/>
         <property key="use-cci" value="false"/>
         <property key="use-iar" value="false"/>
@@ -142,7 +142,6 @@
       </HI-TECH-LINK>
       <XC8-CO>
         <property key="coverage-enable" value=""/>
-        <property key="stack-guidance" value="false"/>
       </XC8-CO>
       <XC8-config-global>
         <property key="advanced-elf" value="true"/>
@@ -157,7 +156,6 @@
         <property key="stack-size-main" value="auto"/>
         <property key="stack-type" value="compiled"/>
         <property key="user-pack-device-support" value=""/>
-        <property key="wpo-lto" value="false"/>
       </XC8-config-global>
     </conf>
   </confs>
